@@ -13,7 +13,7 @@ data:
 <%- File.readlines(@Permissioned_Nodes_File).each do |line| -%>
     <%= line -%>
 <% end -%>
-
+<%- if @Tm_Name != "none" && @Tm_Name == "tessera" -%>
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -37,7 +37,7 @@ data:
 <%- File.readlines(@Tessera_Config_Dir + "/tessera-config-9.0.json").each do |line| -%>
     <%= line -%>
 <% end -%>
-
+<% end -%>
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -52,16 +52,18 @@ data:
 <%- File.readlines("contracts/runscript.sh").each do |line| -%>
     <%= line -%>
 <% end -%>
-# set the tm.pub for node1 in the privateFor field.
-# supports single node deployment.
-  private_contract.js: |-
-<%-  tm_key1 = "NOT_SET" -%>
-<%- File.readlines("#{@Key_Dir_Base}/key1/tm.pub").each do |line| -%>
-<% tm_key1 = line %>
-<% end -%>
-<%- File.readlines("contracts/private_contract.js").each do |line| -%>
-    <%- with_valid_key = line.gsub(/"%PRIVATE_FOR_NODE%"/, '"' + tm_key1 + '"') -%>
-    <%= with_valid_key -%>
+<%- if @Tm_Name != "none" %>
+  # set the tm.pub for node1 in the privateFor field.
+  # supports single node deployment.
+    private_contract.js: |-
+  <%-  tm_key1 = "NOT_SET" -%>
+  <%- File.readlines("#{@Key_Dir_Base}/key1/tm.pub").each do |line| -%>
+  <% tm_key1 = line %>
+  <% end -%>
+  <%- File.readlines("contracts/private_contract.js").each do |line| -%>
+      <%- with_valid_key = line.gsub(/"%PRIVATE_FOR_NODE%"/, '"' + tm_key1 + '"') -%>
+      <%= with_valid_key -%>
+  <% end -%>
 <% end -%>
   public_contract.js: |-
 <%- File.readlines("contracts/public_contract.js").each do |line| -%>

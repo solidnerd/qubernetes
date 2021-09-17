@@ -27,8 +27,8 @@ def set_node_template_vars(values)
   @Node_UserIdent        = values["Node_UserIdent"]
   @Node_Key_Dir          = values["Key_Dir"]
   @Consensus             = values["quorum"]["quorum"]["consensus"]
-  @Tm_Version            = values["quorum"]["tm"]["Tm_Version"]
-  @Tm_Name               = values["quorum"]["tm"]["Name"]
+  @Tm_Version            = values["quorum"]["tm"].has_key('Tm_Version') ? "21.7.2" : values["quorum"]["tm"]["Tm_Version"]
+  @Tm_Name               = values["quorum"]["tm"].has_key('Name') ?  "none" :  values["quorum"]["tm"]["Name"]
   @Quorum_Version        = values["quorum"]["quorum"]["Quorum_Version"]
 
   @Geth_Network_Id = @Chain_Id
