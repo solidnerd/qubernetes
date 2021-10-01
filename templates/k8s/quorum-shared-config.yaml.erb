@@ -9,10 +9,9 @@ metadata:
     name: quorum-permissioned-config
 data:
   permissioned-nodes.json: |
-
 <%- File.readlines(@Permissioned_Nodes_File).each do |line| -%>
     <%= line -%>
-<% end -%>
+<%- end -%>
 <%- if @Tm_Name != "none" && @Tm_Name == "tessera" -%>
 ---
 apiVersion: v1
@@ -48,10 +47,16 @@ metadata:
     app: qubernetes
     name: contracts-config
 data:
+  <%- if @Tm_Name != "none" -%>
   runscript.sh: |-
-<%- File.readlines("contracts/runscript.sh").each do |line| -%>
+  <%- File.readlines("contracts/runscript.sh").each do |line| -%>
     <%= line -%>
-<% end -%>
+  <% end -%>
+  <%- else -%>
+  runscript.sh: |-
+    echo ""
+  <%- end -%>
+
 <%- if @Tm_Name != "none" %>
   # set the tm.pub for node1 in the privateFor field.
   # supports single node deployment.

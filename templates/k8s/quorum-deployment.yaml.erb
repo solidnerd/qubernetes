@@ -221,7 +221,6 @@ spec:
  <%- if @Tm_Name == "tessera" -%>
            until $(wget --quiet --tries=1 --spider http://127.0.0.1:<%= @Tm_Port %>/upcheck); do echo 'waiting for transaction manager to start...'; sleep 5; done;
            echo transaction manager is up;
- <%- else -%>
            sleep 5;
            echo slept for 5 to give TM time to start up;
  <%- end -%>
@@ -277,8 +276,10 @@ spec:
           - containerPort: 6060
         <% end %>
         env:
+        <%- if @Tm_Name != "none" -%>
         - name: PRIVATE_CONFIG
           value: <%= @Node_DataDir %>/tm/tm.ipc
+        <%- end -%>
         - name: QUORUM_DATA_DIR
           value: <%= @Node_DataDir %>/dd
         - name: QUORUM_HOME

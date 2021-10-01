@@ -25,8 +25,8 @@ def set_node_template_vars(values)
   @Node_Key_Dir          = values["Key_Dir"]
   @Consensus             = values["quorum"]["quorum"]["consensus"]
   if values["quorum"].key?('tm')
-    @Tm_Version            = values["quorum"]["tm"].has_key('Tm_Version') ?  @config["genesis"]["Tm_Version"] :  values["quorum"]["tm"]["Tm_Version"]
-    @Tm_Name               = values["quorum"]["tm"].has_key('Name') ?  "none" :  values["quorum"]["tm"]["Name"]
+    @Tm_Version            = values["quorum"]["tm"].has_key?('Tm_Version') ?  @config["genesis"]["Tm_Version"] :  values["quorum"]["tm"]["Tm_Version"]
+    @Tm_Name               = values["quorum"]["tm"].has_key?('Name') ?  "none" :  values["quorum"]["tm"]["Name"]
   else
     @Tm_Version            = @config["genesis"]["Tm_Version"] 
     @Tm_Name               = "none"
